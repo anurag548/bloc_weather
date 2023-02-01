@@ -20,13 +20,17 @@ class OpenMeteoApiClient {
   final http.Client _httpClient;
 
   /// Finds a [Weather] for given [Latitude] & [Longitude]
-  Future<Weather> getWeather(String latitude, String longitude) async {
+  Future<Weather> getWeather({
+    required double latitude,
+    required double longitude,
+  }) async {
     final weatherRequest = Uri.https(
       _baseUrlWeather,
-      'v1/forecase',
+      'v1/forecast',
       {
-        'latitude': latitude,
-        'longitude': longitude,
+        'latitude': '$latitude',
+        'longitude': '$longitude',
+        'current_weather': 'true',
       },
     );
 
@@ -52,7 +56,7 @@ class OpenMeteoApiClient {
     final locatonRequest = Uri.https(
       _baseUrlGeocoding,
       '/v1/search',
-      {'name:': query, 'count': '1'},
+      {'name': query, 'count': '1'},
     );
 
     final locationResponse = await _httpClient.get(locatonRequest);
